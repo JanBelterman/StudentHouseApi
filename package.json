@@ -1,0 +1,22 @@
+{
+  "name": "studentenhuisapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JanBelterman/StudentenhuisApi.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JanBelterman/StudentenhuisApi/issues"
+  },
+  "homepage": "https://github.com/JanBelterman/StudentenhuisApi#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
