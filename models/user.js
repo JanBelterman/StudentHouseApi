@@ -1,13 +1,13 @@
 const Joi = require('Joi');
 
-function validateLogin(login) {
+function validateUser(user) {
     const schema = {
         email: Joi.string().required(),
         password: Joi.string().required(),
         firstname: Joi.string().required(),
         lastname: Joi.string().required()
     };
-    return Joi.validate(login, schema);
+    return Joi.validate(user, schema);
 }
 
-exports.validate = validateLogin;
+exports.validate = validateUser;
