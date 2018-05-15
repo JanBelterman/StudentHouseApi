@@ -104,11 +104,8 @@ router.put('/:id/maaltijd/:mid', auth, (req, res) => {
 
     // Checking if studentenhuis exists
     database.query(queryStudentenhuis, (error, result, field) => {
-        console.log(error);
         if (result.length === 0) return res.status(404).send('Niet gevonden (studentenhuis bestaad niet)');
-        // Querying studentenhuis and sending to client
         database.query(queryMaaltijd, (dbError, result, fields) => {
-            console.log(dbError);
             if (result.length === 0) return res.status(404).send('Niet gevonden (maaltijd bestaad niet)');
             const maaltijd = {
                 ID: result[0].ID.toString(),
@@ -135,11 +132,42 @@ router.put('/:id/maaltijd/:mid', auth, (req, res) => {
                 WHERE ID = '${maaltijd.ID}'`;
             console.log('Update statement:\n', statementUpdateMaaltijd);
             database.query(statementUpdateMaaltijd, maaltijd, (error, result, fields) => {
-                console.log(error);
                 database.query(`SELECT * FROM maaltijd WHERE id = '${maaltijd.ID}'`, (error, result, fields) => {
-                    console.log(error);
                     res.status(200).json(result);
                 })
+
+            });
+        });
+    });
+
+});
+
+router.delete('/:id/maaltijd/:mid', auth, (req, res) => {
+
+    // Get client input
+    const studentenhuisID = req.params.id;
+    const maaltijdID = req.params.mid;
+    const userID = req.user.id.toString();
+
+    // Create query's
+    let queryStudentenhuis =
+        `SELECT *
+        FROM studentenhuis
+        WHERE ID = '${studentenhuisID}'`;
+    const queryMaaltijd =
+        `SELECT *
+        FROM maaltijd
+        WHERE StudentenhuisID = '${studentenhuisID}'
+        AND ID = '${maaltijdID}'`;
+
+    // Checking if studentenhuis exists
+    database.query(queryStudentenhuis, (error, result, field) => {
+        if (result.length === 0) return res.status(404).send('Niet gevonden (studentenhuis bestaad niet)');
+        database.query(queryMaaltijd, (dbError, result, fields) => {
+            if (result.length === 0) return res.status(404).send('Niet gevonden (maaltijd bestaad niet)');
+            if (!(userID.toString() === result[0].UserID.toString())) return res.status(409).send('Cannot delete someone else his/her maaltijden');
+            database.query(`DELETE FROM maaltijd WHERE StudentenhuisID = '${studentenhuisID}' AND ID = '${maaltijdID}'`, (error, result) => {
+                res.status(200).send('Maaltijd met succes verwijderd');
 
             });
         });
