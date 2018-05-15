@@ -2,10 +2,10 @@ const mySql = require('mysql');
 
 // Database connecting
 let database = mySql.createConnection( {
-    host: '188.166109.108',
-    user: 'studentenhuis_user',
-    password: 'secret',
-    database: 'studentenhuis',
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
     insecureAuth: true
 });
 database.connect( (error) => {
