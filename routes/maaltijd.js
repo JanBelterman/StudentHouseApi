@@ -42,4 +42,46 @@ router.post('/:id/maaltijd', auth, async (req, res) => {
 
 });
 
+router.get('/:id/maaltijd', auth, (req, res) => {
+
+    // Checking if studentenhuis exists
+    database.query(`SELECT * FROM studentenhuis WHERE ID = ${req.params.id}`, (error, result, field) => {
+        if (result.length === 0) return res.status(404).send('Niet gevonden (huisId bestaad niet)');
+        // Querying studentenhuis and sending to client
+        database.query('SELECT * FROM maaltijd', (error, result, fields) => {
+            res.status(200).json(result);
+        });
+    });
+
+});
+
+router.get('/:id/maaltijd/:mid', auth, (req, res) => {
+
+    // Get client input
+    const studentenhuisID = req.params.id;
+    const maaltijdID = req.params.mid;
+
+    // Create query's
+    let queryStudentenhuis =
+        `SELECT *
+        FROM studentenhuis
+        WHERE ID = '${studentenhuisID}'`;
+    const queryMaaltijd =
+        `SELECT *
+        FROM maaltijd
+        WHERE StudentenhuisID = '${studentenhuisID}'
+        AND ID = '${maaltijdID}'`;
+
+    // Checking if studentenhuis exists
+    database.query(queryStudentenhuis, (error, result, field) => {
+        if (result.length === 0) return res.status(404).send('Niet gevonden (studentenhuis bestaad niet)');
+        // Querying studentenhuis and sending to client
+        database.query(queryMaaltijd, (error, result, fields) => {
+            if (result.length === 0) return res.status(404).send('Niet gevonden (maaltijd bestaad niet)');
+            res.status(200).json(result);
+        });
+    });
+
+});
+
 module.exports = router;
