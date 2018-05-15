@@ -25,7 +25,7 @@ router.post('/', auth, (req, res) => {
     database.query('INSERT INTO studentenhuis SET ?', studentenhuis, (error, result, fields) => {
         // Querying studentenhuis and sending to client
         database.query(`SELECT * FROM studentenhuis WHERE id = ${result.insertId}`, (error, result, field) => {
-            res.status(200).json(result);
+            res.status(200).json(result[0]);
         })
     })
 
@@ -72,7 +72,7 @@ router.put('/:id', auth, (req, res) => {
 
             database.query(`SELECT * FROM studentenhuis WHERE id = '${req.params.id}'`, (error, result, fields) => {
                 if (result.length === 0) return res.status(404).send('Niet gevonden (huisId bestaad niet)');
-                res.status(200).json(result);
+                res.status(200).json(result[0]);
             })
 
         });

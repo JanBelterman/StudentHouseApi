@@ -1,6 +1,9 @@
+// Require modules
 const Joi = require('Joi');
 
+// Validate function for the maaltijd object
 function validateMaaltijd(maaltijd) {
+    // Maaltijd schema
     const schema = {
         ID: Joi.string().required(),
         Naam: Joi.string().required(),
@@ -11,7 +14,9 @@ function validateMaaltijd(maaltijd) {
         UserID: Joi.string().required(),
         StudentenhuisID: Joi.string().required()
     };
+    // Validate maaltijd and return result
     return Joi.validate(maaltijd, schema);
 }
 
+// Export validate function
 exports.validate = validateMaaltijd;

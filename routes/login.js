@@ -15,7 +15,7 @@ router.post('/', (req, res) => {
         email: req.body.email,
         password: req.body.password
     };
-
+    console.log('Login called with user:\n', userClient);
     // Validating client input
     const { error } = validate(userClient);
     if (error) return res.status(400).send(error.details[0].message);
@@ -31,32 +31,28 @@ router.post('/', (req, res) => {
                 password: result[0].Password
             };
             // Log some information
-            console.log('User from client:\n', userClient);
-            console.log('Linked user from server:\n', userServer);
-            // If password is correct
+            console.log('Matching user found in server:\n', userServer);
+            // Check password
             if (userServer.password === userClient.password) {
                 // Create token
                 const token = jwt.sign({ userServer }, 'HoningDropVanVencoTijdensHetProgrammeren');
                 // Send response to client
-                const loginResult = {
+                res.json({
                     email: userServer.email,
                     token: token
-                };
-                res.json(loginResult);
-                // Log some information
-                console.log('LoginResult:\n', loginResult);
+                });
             }
-            // If password is not correct
+            // If password isn't correct
             else {
                 res.send('Password is incorrect');
             }
         }
-        // If user not exists
+        // If user doesn't exists
         else {
             res.send('Not a valid user');
         }
     })
 });
 
-
+// Export login routes
 module.exports = router;
