@@ -9,15 +9,13 @@ const router = express.Router();
 
 router.post('/', auth, (req, res) => {
 
-    console.log('User in req:\n', req.user);
-
     // Getting studenthouse
     const studentenhuis = {
         naam: req.body.naam,
         adres: req.body.adres,
         userId: req.user.id.toString()
     };
-    console.log('About to insert:\n', studentenhuis);
+    console.log('Post called for studentenhuis:\n', studentenhuis);
 
     // Validating client input
     const { error } = validate(studentenhuis);
@@ -38,7 +36,7 @@ router.get('/', auth, (req, res) => {
     // Querying studentenhuis and sending to client
     database.query('SELECT * FROM studentenhuis', (error, result, fields) => {
         res.status(200).json(result);
-    })
+    });
 
 });
 
@@ -47,7 +45,7 @@ router.get('/:id', auth, (req, res) => {
     database.query(`SELECT * FROM studentenhuis WHERE id = '${req.params.id}'`, (error, result, fields) => {
         if (result.length === 0) return res.status(404).send('Niet gevonden (huisId bestaad niet)');
         res.status(200).json(result);
-    })
+    });
 
 });
 
@@ -59,7 +57,7 @@ router.put('/:id', auth, (req, res) => {
         adres: req.body.adres,
         userId: req.user.id.toString()
     };
-    console.log('About to update:\n', studentenhuis);
+    console.log('Update called for studentenhuis:\n', studentenhuis);
     // Validating client input
     const { error } = validate(studentenhuis);
     if (error) return res.status(412).send(error.details[0].message);
