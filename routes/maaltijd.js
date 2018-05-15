@@ -84,4 +84,67 @@ router.get('/:id/maaltijd/:mid', auth, (req, res) => {
 
 });
 
+router.put('/:id/maaltijd/:mid', auth, (req, res) => {
+
+    // Get client input
+    const studentenhuisID = req.params.id;
+    const maaltijdID = req.params.mid;
+    const userID = req.user.id.toString();
+
+    // Create query's
+    let queryStudentenhuis =
+        `SELECT *
+        FROM studentenhuis
+        WHERE ID = '${studentenhuisID}'`;
+    const queryMaaltijd =
+        `SELECT *
+        FROM maaltijd
+        WHERE StudentenhuisID = '${studentenhuisID}'
+        AND ID = '${maaltijdID}'`;
+
+    // Checking if studentenhuis exists
+    database.query(queryStudentenhuis, (error, result, field) => {
+        console.log(error);
+        if (result.length === 0) return res.status(404).send('Niet gevonden (studentenhuis bestaad niet)');
+        // Querying studentenhuis and sending to client
+        database.query(queryMaaltijd, (dbError, result, fields) => {
+            console.log(dbError);
+            if (result.length === 0) return res.status(404).send('Niet gevonden (maaltijd bestaad niet)');
+            const maaltijd = {
+                ID: result[0].ID.toString(),
+                Naam: req.body.naam,
+                Beschrijving: req.body.beschrijving,
+                Ingredienten: req.body.ingredienten,
+                Allergie: req.body.allergie,
+                Prijs: req.body.prijs,
+                UserID: result[0].UserID.toString(),
+                StudentenhuisID: result[0].StudentenhuisID.toString()
+            };
+            console.log('Maaltijd:\n', maaltijd);
+            console.log('User trying to edit maaltijd:\n', userID);
+            const { error } = validate(maaltijd);
+            if (error) return res.status(412).send(error.details[0].message);
+            if (!(userID.toString() === maaltijd.UserID.toString())) return res.status(409).send('Cannot modify someone else his/her maaltijden');
+            const statementUpdateMaaltijd =
+                `UPDATE maaltijd
+                SET Naam = '${maaltijd.Naam}',
+                Beschrijving = '${maaltijd.Beschrijving}',
+                Ingredienten = '${maaltijd.Ingredienten}',
+                Allergie = '${maaltijd.Allergie}',
+                Prijs = '${maaltijd.Prijs}'
+                WHERE ID = '${maaltijd.ID}'`;
+            console.log('Update statement:\n', statementUpdateMaaltijd);
+            database.query(statementUpdateMaaltijd, maaltijd, (error, result, fields) => {
+                console.log(error);
+                database.query(`SELECT * FROM maaltijd WHERE id = '${maaltijd.ID}'`, (error, result, fields) => {
+                    console.log(error);
+                    res.status(200).json(result);
+                })
+
+            });
+        });
+    });
+
+});
+
 module.exports = router;
