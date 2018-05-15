@@ -7,8 +7,8 @@ function validateUser(user) {
     const schema = {
         email: Joi.string().required(),
         password: Joi.string().required(),
-        firstname: Joi.string().required(),
-        lastname: Joi.string().required()
+        voornaam: Joi.string().required(),
+        achternaam: Joi.string().required()
     };
     // Validate user and return the result
     return Joi.validate(user, schema);

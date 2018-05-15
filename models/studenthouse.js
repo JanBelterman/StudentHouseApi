@@ -2,9 +2,9 @@ const Joi = require('Joi');
 
 function validateStudenthouse(studenthouse) {
     const schema = {
-        naam: Joi.string().required(),
-        adres: Joi.string().required(),
-        userId: Joi.string().required()
+        Naam: Joi.string().required(),
+        Adres: Joi.string().required(),
+        UserID: Joi.string().required()
     };
     return Joi.validate(studenthouse, schema);
 }

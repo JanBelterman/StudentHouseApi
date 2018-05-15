@@ -8,7 +8,7 @@ chai.use(chaiHttp);
 describe('Studentenhuis API POST', () => {
 
     before(function(){
-        global.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyU2VydmVyIjp7ImlkIjoyMCwiZW1haWwiOiJqYW5iZWx0ZXJtYW5AYXZhbnMubmwiLCJwYXNzd29yZCI6IjEyMzQ1In0sImlhdCI6MTUyNjM4NDcxN30.KHyoddoCUjL2nDHLqDrUm_frwKUEZqtE50RWvt5X9cI';
+        global.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyU2VydmVyIjp7ImlkIjo2OCwiZW1haWwiOiJqYW5iZWx0ZXJtYW5AYXZhbnMubmwiLCJwYXNzd29yZCI6IjEyMzQ1In0sImlhdCI6MTUyNjQxMzc0Mn0.nThTFJwXroRerJfSnaygiAUxmLFH0LzimKq77QF4c1I';
     });
 
     it('should throw an error when using invalid JWT token', (done) => {
@@ -184,7 +184,7 @@ describe('Studentenhuis API PUT', () => {
         };
 
         chai.request(server)
-            .put('/api/studentenhuis/7')
+            .put('/api/studentenhuis/75')
             .send(studentenhuis)
             .set('x-auth-token', global.token)
             .end( (err, res) =>{
