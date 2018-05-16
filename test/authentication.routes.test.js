@@ -14,25 +14,32 @@
 //
 // describe('Registration', () => {
 //     it('should return a token when providing valid information', (done) => {
-//         //
-//         // Hier schrijf je jouw testcase.
-//         //
 //
-//         // Tip: deze test levert een token op. Dat token gebruik je in
-//         // andere testcases voor beveiligde routes door het hier te exporteren
-//         // en in andere testcases te importeren via require.
-//         // validToken = res.body.token
-//         // module.exports = {
-//         //     token: validToken
-//         // }
+//         let user = {
+//             email: 'janbeltermannnnnaawdasdcafwawdawdfafege@gmail.com',
+//             password: '12345',
+//             firstname: 'Jan',
+//             lastname: 'Belterman'
+//         };
+//
+//
+//         chai.request(server)
+//             .post('/api/register')
+//             .send(user)
+//             .end( (err, res) => {
+//                 res.should.have.status(200);
+//                 res.should.be.a('object');
+//                 res.should.have.property('Token');
+//                 res.should.have.property('Email');
+//             });
+//
 //         done()
 //     });
 //
 //     it('should return an error on GET request', (done) => {
-//         //
-//         // Hier schrijf je jouw testcase.
-//         //
-//         done()
+//
+//
+//
 //     });
 //
 //     it('should throw an error when the user already exists', (done) => {

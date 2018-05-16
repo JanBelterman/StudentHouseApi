@@ -27,7 +27,17 @@ router.post('/', (req, res) => {
         // Inserting user
         database.query('INSERT INTO user SET ?', login, (error, result, fields) => {
             database.query(`SELECT * FROM user WHERE id = ${result.insertId}`, (error, result, field) => {
-                res.json(result);
+                let userServer = {
+                    email: result[0].Email,
+                    id: result[0].ID
+                };
+                // Create token
+                const token = jwt.sign({ userServer }, 'HoningDropVanVencoTijdensHetProgrammeren');
+                // Send response to client
+                res.json({
+                    Email: result[0].Email,
+                    Token: token
+                });
             })
         })
     });
