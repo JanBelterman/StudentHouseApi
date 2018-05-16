@@ -184,7 +184,7 @@ describe('Studentenhuis API PUT', () => {
         };
 
         chai.request(server)
-            .put('/api/studentenhuis/75')
+            .put('/api/studentenhuis/7')
             .send(studentenhuis)
             .set('x-auth-token', global.token)
             .end( (err, res) =>{
