@@ -5,7 +5,6 @@ const Joi = require('joi');
 function validateMaaltijd(maaltijd) {
     // Maaltijd schema
     const schema = {
-        ID: Joi.string().required(),
         Naam: Joi.string().required(),
         Beschrijving: Joi.string().required(),
         Ingredienten: Joi.string().required(),
