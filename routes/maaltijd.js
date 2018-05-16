@@ -107,6 +107,19 @@ router.put('/:id/maaltijd/:mid', auth, (req, res) => {
         if (result.length === 0) return res.status(404).send('Niet gevonden (studentenhuis bestaad niet)');
         database.query(queryMaaltijd, (dbError, result, fields) => {
             if (result.length === 0) return res.status(404).send('Niet gevonden (maaltijd bestaad niet)');
+            const maaltijdToVal = {
+                Naam: req.body.naam,
+                Beschrijving: req.body.beschrijving,
+                Ingredienten: req.body.ingredienten,
+                Allergie: req.body.allergie,
+                Prijs: req.body.prijs,
+                UserID: result[0].UserID.toString(),
+                StudentenhuisID: result[0].StudentenhuisID.toString()
+            };
+            console.log('Maaltijd:\n', maaltijdToVal);
+            console.log('User trying to edit maaltijd:\n', userID);
+            const { error } = validate(maaltijdToVal);
+            if (error) return res.status(412).send(error.details[0].message);
             const maaltijd = {
                 ID: result[0].ID.toString(),
                 Naam: req.body.naam,
@@ -117,10 +130,6 @@ router.put('/:id/maaltijd/:mid', auth, (req, res) => {
                 UserID: result[0].UserID.toString(),
                 StudentenhuisID: result[0].StudentenhuisID.toString()
             };
-            console.log('Maaltijd:\n', maaltijd);
-            console.log('User trying to edit maaltijd:\n', userID);
-            const { error } = validate(maaltijd);
-            if (error) return res.status(412).send(error.details[0].message);
             if (!(userID.toString() === maaltijd.UserID.toString())) return res.status(409).send('Cannot modify someone else his/her maaltijden');
             const statementUpdateMaaltijd =
                 `UPDATE maaltijd
