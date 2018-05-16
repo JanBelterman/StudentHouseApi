@@ -1,5 +1,5 @@
 // Require modules
-const Joi = require('Joi');
+const Joi = require('joi');
 
 // Validate function for the maaltijd object
 function validateMaaltijd(maaltijd) {

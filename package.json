@@ -7,6 +7,9 @@
     "test": "./node_modules/.bin/mocha --reporter spec --exit",
     "start": "node app.js"
   },
+  "engines": {
+    "node": "8.11.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JanBelterman/StudentenhuisApi.git"

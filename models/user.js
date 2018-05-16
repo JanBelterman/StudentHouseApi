@@ -1,5 +1,5 @@
 // Require modules
-const Joi = require('Joi');
+const Joi = require('joi');
 
 // Function to validate a user object
 function validateUser(user) {
