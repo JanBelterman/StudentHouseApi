@@ -19,7 +19,7 @@ router.post('/', (req, res) => {
     };
     // Validating the user object
     const { error } = validate(login);
-    if (error) return res.status(400).send(error.details[0].message);
+    if (error) return res.status(412).send(error.details[0].message);
 
     // Checking if user exists
     database.query(`SELECT email FROM user WHERE email = '${login.email}'`, (error, result, fields) => {

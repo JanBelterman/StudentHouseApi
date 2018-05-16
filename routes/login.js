@@ -18,7 +18,7 @@ router.post('/', (req, res) => {
     console.log('Login called with user:\n', userClient);
     // Validating client input
     const { error } = validate(userClient);
-    if (error) return res.status(400).send(error.details[0].message);
+    if (error) return res.status(412).send(error.details[0].message);
 
     // Query database for user
     database.query(`SELECT * FROM user WHERE email = '${userClient.email}'`, (error, result, fields) => {
