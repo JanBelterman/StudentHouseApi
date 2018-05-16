@@ -10,47 +10,46 @@ const router = express.Router();
 // Login route
 router.post('/', (req, res) => {
 
-    // Getting client input
-    let userClient = {
-        email: req.body.email,
-        password: req.body.password
-    };
-    console.log('Login called with user:\n', userClient);
-    // Validating client input
-    const { error } = validate(userClient);
+    // Validate client input (code 412)
+    const {error} = validate(req.body);
     if (error) return res.status(412).send(error.details[0].message);
 
-    // Query database for user
-    database.query(`SELECT * FROM user WHERE email = '${userClient.email}'`, (error, result, fields) => {
+    // Checking if user exists
+    database.query(`SELECT * FROM user WHERE email = '${req.body.email}'`, (error, result, fields) => {
+
         // If user exists
         if (result.length > 0) {
-            // Get user from server
-            let userServer = {
-                id: result[0].ID,
-                email: result[0].Email,
-                password: result[0].Password
-            };
-            // Log some information
-            console.log('Matching user found in server:\n', userServer);
+
             // Check password
-            if (userServer.password === userClient.password) {
+            if (req.body.password === result[0].Password) {
+
                 // Create token
-                const token = jwt.sign({ userServer }, 'HoningDropVanVencoTijdensHetProgrammeren');
-                // Send response to client
-                res.json({
-                    email: userServer.email,
-                    token: token
+                const token = jwt.sign({
+                    user: {
+                        ID: result[0].ID,
+                        Email: result[0].Email
+                    }}, 'SeCrEtJsOnWeBtOkEn');
+
+                // Send response to client (code 200)
+                res.status(200).json({
+                    Token: token,
+                    Email: result[0].Email
                 });
+
             }
-            // If password isn't correct
+
+            // If password isn't correct (code 401)
             else {
-                res.send('Password is incorrect');
+                res.status(401).send('Aces denied. Password is incorrect');
             }
+
         }
-        // If user doesn't exists
+
+        // If user doesn't exists (code 401)
         else {
-            res.send('Not a valid user');
+            res.status(401).send('Aces denied. Not a valid user');
         }
+
     })
 });
 

@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/:studentenhuisId/maaltijd/:maaltijdId/deelnemers', auth, (req, res) => {
 
     const deelnemer = {
-        UserID: req.user.id.toString(),
+        UserID: req.user.ID.toString(),
         StudentenhuisID: req.params.studentenhuisId,
         MaaltijdID: req.params.maaltijdId
     };
@@ -29,7 +29,7 @@ router.post('/:studentenhuisId/maaltijd/:maaltijdId/deelnemers', auth, (req, res
 router.get('/:studentenhuisId/maaltijd/:maaltijdId/deelnemers', auth, (req, res) => {
 
     const deelnemer = {
-        UserID: req.user.id.toString(),
+        UserID: req.user.ID.toString(),
         StudentenhuisID: req.params.studentenhuisId,
         MaaltijdID: req.params.maaltijdId
     };
@@ -43,7 +43,7 @@ router.get('/:studentenhuisId/maaltijd/:maaltijdId/deelnemers', auth, (req, res)
 router.delete('/:studentenhuisId/maaltijd/:maaltijdId/deelnemers', auth, (req, res) => {
 
     const deelnemer = {
-        UserID: req.user.id.toString(),
+        UserID: req.user.ID.toString(),
         StudentenhuisID: req.params.studentenhuisId,
         MaaltijdID: req.params.maaltijdId
     };

@@ -13,11 +13,11 @@ function auth(req, res, next) {
 
     try {
         // Get payload from token
-        const payload = jwt.verify(token, 'HoningDropVanVencoTijdensHetProgrammeren');
+        const payload = jwt.verify(token, 'SeCrEtJsOnWeBtOkEn');
         // Create user from payload
         req.user = {
-            id: payload.userServer.id,
-            email: payload.userServer.email
+            ID: payload.user.ID,
+            Email: payload.user.Email
         };
         // Log information
         console.log('Aces granted. Valid token');

@@ -10,34 +10,42 @@ const router = express.Router();
 // Register route
 router.post('/', (req, res) => {
 
-    // Converting client input into user object
-    const login = {
-        email: req.body.email,
-        password: req.body.password,
-        voornaam: req.body.firstname,
-        achternaam: req.body.lastname
-    };
-    // Validating the user object
-    const { error } = validate(login);
+    // Validating the user object (code 412)
+    const { error } = validate(req.body);
     if (error) return res.status(412).send(error.details[0].message);
 
+    // Converting client input into user object
+    const login = {
+        Email: req.body.email,
+        Password: req.body.password,
+        Voornaam: req.body.voornaam,
+        Achternaam: req.body.achternaam
+    };
+
     // Checking if user exists
-    database.query(`SELECT email FROM user WHERE email = '${login.email}'`, (error, result, fields) => {
-        if (result.length > 0) return res.status(400).send('User already exists');
+    database.query(`SELECT email FROM user WHERE email = '${login.Email}'`, (error, result, fields) => {
+        // If user already exists (code 401)
+        if (result.length > 0) return res.status(401).send('User already exists');
+
         // Inserting user
         database.query('INSERT INTO user SET ?', login, (error, result, fields) => {
+
+            // Getting user to return to client
             database.query(`SELECT * FROM user WHERE id = ${result.insertId}`, (error, result, field) => {
-                let userServer = {
-                    email: result[0].Email,
-                    id: result[0].ID
-                };
+
                 // Create token
-                const token = jwt.sign({ userServer }, 'HoningDropVanVencoTijdensHetProgrammeren');
+                const token = jwt.sign({
+                    user: {
+                        ID: result[0].ID,
+                        Email: result[0].Email
+                    }}, 'SeCrEtJsOnWeBtOkEn');
+
                 // Send response to client
-                res.json({
+                res.status(200).json({
                     Email: result[0].Email,
                     Token: token
                 });
+
             })
         })
     });

@@ -3,18 +3,19 @@ const Joi = require('joi');
 
 // Validate function for the maaltijd object
 function validateMaaltijd(maaltijd) {
+
     // Maaltijd schema
     const schema = {
-        Naam: Joi.string().required(),
-        Beschrijving: Joi.string().required(),
-        Ingredienten: Joi.string().required(),
-        Allergie: Joi.string().required(),
-        Prijs: Joi.number().required(),
-        UserID: Joi.string().required(),
-        StudentenhuisID: Joi.string().required()
+        naam: Joi.string().required(),
+        beschrijving: Joi.string().required(),
+        ingredienten: Joi.string().required(),
+        allergie: Joi.string().required(),
+        prijs: Joi.number().required()
     };
+
     // Validate maaltijd and return result
     return Joi.validate(maaltijd, schema);
+
 }
 
 // Export validate function
