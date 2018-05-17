@@ -66,7 +66,7 @@ router.get('/:studentenhuisId/maaltijd/:maaltijdId', auth, (req, res) => {
         if (result.length === 0) return res.status(404).send('Niet gevonden (studentenhuis bestaad niet)');
 
         // Querying studentenhuis and sending to client
-        database.query(`SELECT * FROM maaltijd WHERE StudentenhuisID = '${req.params.maaltijdId}' AND ID = '${maaltijdID}'`, (error, result, fields) => {
+        database.query(`SELECT * FROM maaltijd WHERE StudentenhuisID = '${req.params.studentenhuisId}' AND ID = '${req.params.maaltijdId}'`, (error, result, fields) => {
             if (result.length === 0) return res.status(404).send('Niet gevonden (maaltijd bestaad niet)');
 
             res.status(200).json(result);
@@ -120,11 +120,11 @@ router.put('/:studentenhuisId/maaltijd/:maaltijdId', auth, (req, res) => {
 router.delete('/:studentenhuisId/maaltijd/:maaltijdId', auth, (req, res) => {
 
     // Checking if studentenhuis exists
-    database.query(`SELECT * FROM studentenhuis WHERE ID = '${studentenhuisID}'`, (error, result, field) => {
+    database.query(`SELECT * FROM studentenhuis WHERE ID = '${req.params.studentenhuisId}'`, (error, result, field) => {
         if (result.length === 0) return res.status(404).send('Studenthouse not found');
 
         // Checking if maaltijd exists
-        database.query(`SELECT * FROM maaltijd WHERE StudentenhuisID = '${studentenhuisID}' AND ID = '${maaltijdID}'`, (error, result, fields) => {
+        database.query(`SELECT * FROM maaltijd WHERE StudentenhuisID = '${req.params.studentenhuisId}' AND ID = '${req.params.maaltijdId}'`, (error, result, fields) => {
             if (result.length === 0) return res.status(404).send('Maaltijd not found');
 
             // Checking if client is authorized to edit this maaltijd
